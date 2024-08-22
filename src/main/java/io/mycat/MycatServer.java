@@ -366,7 +366,7 @@ public class MycatServer {
                         bufferPoolPageNumber, system.getFrontSocketSoRcvbuf());
 
 
-                totalNetWorkBufferSize = bufferPoolPageSize * bufferPoolPageNumber;
+                totalNetWorkBufferSize = (long) bufferPoolPageSize * bufferPoolPageNumber;
                 break;
             case 1:
                 /**
@@ -380,7 +380,7 @@ public class MycatServer {
                  * bufferPoolPageNumber对应每个bytebufferlist有多少个bytebufferchunk
                  */
 
-                totalNetWorkBufferSize = 6 * bufferPoolPageSize * bufferPoolPageNumber;
+                totalNetWorkBufferSize = 6L * bufferPoolPageSize * bufferPoolPageNumber;
                 break;
             case 2:
                 bufferPool = new NettyBufferPool(bufferPoolChunkSize);
@@ -391,7 +391,7 @@ public class MycatServer {
                 bufferPool = new DirectByteBufferPool(bufferPoolPageSize, bufferPoolChunkSize,
                         bufferPoolPageNumber, system.getFrontSocketSoRcvbuf());
                 ;
-                totalNetWorkBufferSize = bufferPoolPageSize * bufferPoolPageNumber;
+                totalNetWorkBufferSize = (long) bufferPoolPageSize * bufferPoolPageNumber;
         }
 
         /**
@@ -463,11 +463,11 @@ public class MycatServer {
         }
         // manager start
         manager.start();
-        LOGGER.info(manager.getName() + " is started and listening on " + manager.getPort());
+        LOGGER.info("{} is started and listening on {}", manager.getName(), manager.getPort());
         server.start();
 
         // server started
-        LOGGER.info(server.getName() + " is started and listening on " + server.getPort());
+        LOGGER.info("{} is started and listening on {}", server.getName(), server.getPort());
 
         LOGGER.info("===============================================");
 
@@ -477,7 +477,7 @@ public class MycatServer {
         for (PhysicalDBPool node : dataHosts.values()) {
             String index = dnIndexProperties.getProperty(node.getHostName(), "0");
             if (!"0".equals(index)) {
-                LOGGER.info("init datahost: " + node.getHostName() + "  to use datasource index:" + index);
+                LOGGER.info("init datahost: {}  to use datasource index:{}", node.getHostName(), index);
             }
             node.init(Integer.parseInt(index));
             node.startHeartbeat();

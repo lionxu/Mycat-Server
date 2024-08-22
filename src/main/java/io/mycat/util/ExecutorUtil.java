@@ -30,11 +30,11 @@ import java.util.concurrent.LinkedTransferQueue;
  */
 public class ExecutorUtil {
 
-    public static final NameableExecutor create(String name, int size) {
+    public static NameableExecutor create(String name, int size) {
         return create(name, size, true);
     }
 
-    private static final NameableExecutor create(String name, int size, boolean isDaemon) {
+    private static NameableExecutor create(String name, int size, boolean isDaemon) {
         NameableThreadFactory factory = new NameableThreadFactory(name, isDaemon);
         return new NameableExecutor(name, size, new LinkedTransferQueue<Runnable>(), factory);
     }

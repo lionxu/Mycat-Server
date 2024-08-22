@@ -63,15 +63,15 @@ public final class NIOProcessor {
 	public final static ConcurrentLinkedQueue<BackendConnection> backends_old = new ConcurrentLinkedQueue<BackendConnection>();
 
 	//前端已连接数
-	private AtomicInteger frontendsLength = new AtomicInteger(0);
+	private final AtomicInteger frontendsLength = new AtomicInteger(0);
 
 	public NIOProcessor(String name, BufferPool bufferPool,
 			NameableExecutor executor) throws IOException {
 		this.name = name;
 		this.bufferPool = bufferPool;
 		this.executor = executor;
-		this.frontends = new ConcurrentHashMap<Long, FrontendConnection>();
-		this.backends = new ConcurrentHashMap<Long, BackendConnection>();
+		this.frontends = new ConcurrentHashMap<>();
+		this.backends = new ConcurrentHashMap<>();
 		this.commands = new CommandCount();
 	}
 
@@ -209,7 +209,7 @@ public final class NIOProcessor {
 			}
 			// SQL执行超时的连接关闭
 			if (c.isBorrowed() && c.getLastTime() < TimeUtil.currentTimeMillis() - sqlTimeout) {
-				LOGGER.warn("found backend connection SQL timeout ,close it " + c);
+                LOGGER.warn("found backend connection SQL timeout ,close it {}", c);
 				c.close("sql timeout");
 			}
 
