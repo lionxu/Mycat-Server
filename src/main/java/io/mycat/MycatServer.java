@@ -808,7 +808,7 @@ public class MycatServer {
             if (fileOut != null) {
                 try {
                     fileOut.close();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
         }
